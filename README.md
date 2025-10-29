@@ -1,2 +1,17 @@
 # Belief-Networks-Hidden-Markov-Models
 Fall 2025 CS 362/562
+
+Reflection
+
+Give an example of a word which was correctly spelled by the user, but which was incorrectly “corrected” by the algorithm. Why did this happen?
+    An example of a word which was correctly spelled but was incorrectly "corrected" by the algorithm is "up_cast", which was converted to "writing." This error happened because the algorithm is dependent on the early learned probabilities and accessible training data. If "up_cast" is not well represented in the training set, or if the algorithm has has determined that "writing" is a more common word based on its character patterns, it may incorrectly select "writing" as the correction. This shows the algorithm's limits, lacking an extensive knowledge of context or accurate meanings of words, resulting to incorrect corrections when the intended word is correct but less commonly seen in the training data.
+
+Give an example of a word which was incorrectly spelled by the user, but which was still incorrectly “corrected” by the algorithm. Why did this happen?
+    An example of a word which was incorrectly spelled but was still incorrectly corrected is "cicle". The misspelled word "cicle" is converted to "sense" instead of the correct word "circle" because the algorithm scores candidates based on character-level emission and transition probabilities obtained from training pairings, not by vocabulary frequency or a word-level language model. "Sense" has the same length as "cicle" and, depending on learned emissions/transitions and training distribution, may result in a higher model score than "circle." In other words, the model selects the highest-scoring sequence of characters based on its learned probabilities rather than the actual correct word. Adding a word-frequency, employing whole-word candidate generation and ranking, or training on real typo distributions would all help reduce these errors.
+
+Give an example of a word which was incorrectly spelled by the user, and was correctly corrected by the algorithm. Why was this one correctly corrected, while the previous two were not?
+    An example of a word which was incorrectly spelled but was correctly corrected by the algorithm is "beleive" being converted to "believe." This correction is effective since the error pattern is common and well represented in the training data, and the correct word "believe" is included in the aspell.txt file. The emission and transition probability are correctly aligned for this adjustment, allowing the algorithm to select the appropriate word.
+
+How might the overall algorithm’s performance differ in the “real world” if that training dataset is taken from real typos collected from the internet, versus synthetic typos (programmatically
+generated)?
+    If the training dataset is from real typos collected from the internet, the algorithm's performance is likely to increase in real-world situations since the data reflects actual human error patterns, and natural language usage. Synthetic typos may fail to capture the entire aspect of real-world errors, resulting in less accurate adjustments and the possible loss of necessary patterns seen in the actual user input.
