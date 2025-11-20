@@ -28,7 +28,7 @@ def build_alarm_model() -> DiscreteBayesianNetwork:
         values=[[0.999, 0.71, 0.06, 0.05], [0.001, 0.29, 0.94, 0.95]],
         evidence=["Burglary", "Earthquake"],
         evidence_card=[2, 2],
-        state_names={"Burglary":['no','yes'], "Earthquake":['no','yes'], 'Alarm':['yes','no']},
+        state_names={"Burglary":['no','yes'], "Earthquake":['no','yes'], "Alarm":['no','yes']},
     )
     cpd_johncalls = TabularCPD(
         variable="JohnCalls",
@@ -36,15 +36,15 @@ def build_alarm_model() -> DiscreteBayesianNetwork:
         values=[[0.95, 0.1], [0.05, 0.9]],
         evidence=["Alarm"],
         evidence_card=[2],
-        state_names={"Alarm":['yes','no'], "JohnCalls":['yes', 'no']},
+        state_names={"Alarm":['no','yes'], "JohnCalls":['no', 'yes']},
     )
     cpd_marycalls = TabularCPD(
         variable="MaryCalls",
         variable_card=2,
-        values=[[0.1, 0.7], [0.9, 0.3]],
+        values=[[0.99, 0.3], [0.01, 0.7]],
         evidence=["Alarm"],
         evidence_card=[2],
-        state_names={"Alarm":['yes','no'], "MaryCalls":['yes', 'no']},
+        state_names={"Alarm":['no','yes'], "MaryCalls":['no', 'yes']},
     )
 
     # Associating the parameters with the model structure
@@ -60,21 +60,21 @@ def main():
     #print(alarm_infer.query(variables=["JohnCalls"],evidence={"Earthquake":"yes"}))
     #
     #the probability of Mary Calling given that John called
-    # 10.02% chance Mary calls if John calls
+    # 4% chance Mary calls if John calls
     q1 = alarm_infer.query(variables=["MaryCalls"],evidence={"JohnCalls":"yes"})
-    print("P(MaryCalls | JohnCalls) = 0.1002")
+    print("P(MaryCalls | JohnCalls) = 0.04")
     print(q1)
 
     #the probability of both John and Mary calling given that the alarm has gone off
-    # 9.5% chance both John and Mary call if the alarm goes off
+    # 63% chance both John and Mary call if the alarm goes off
     q2 = alarm_infer.query(variables=["JohnCalls", "MaryCalls"],evidence={"Alarm":"yes"})
-    print("\nP(JohnCalls, MaryCalls | Alarm) = 0.095")
+    print("\nP(JohnCalls, MaryCalls | Alarm) = 0.63")
     print(q2)
 
     #the probability of the alarm going off given that Mary called
-    # 98.26% chance the alarm went off if Mary calls
+    # 15.01% chance the alarm went off if Mary calls
     q3 = alarm_infer.query(variables=["Alarm"],evidence={"MaryCalls":"yes"})
-    print("\nP(Alarm | MaryCalls) = 0.9826")
+    print("\nP(Alarm | MaryCalls) = 0.1501")
     print(q3)
 
 if __name__ == "__main__":
